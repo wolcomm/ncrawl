@@ -99,6 +99,6 @@ ENV/
 .pydevproject
 
 # Other settings
-db.sqlite3
-manage.py
 /django_ncrawl/
+/db.sqlite3
+/manage.py

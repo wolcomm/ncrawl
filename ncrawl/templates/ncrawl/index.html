@@ -1,0 +1,45 @@
+{% extends "ncrawl/base.html" %}
+{% load staticfiles %}
+
+{% block modal %}
+    <div class="modal fade" id="legacy-ip-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content panel-danger">
+                <div class="modal-header panel-heading">
+                    <h4 class="modal-title"><strong>Warning!</strong> Legacy IP version detected.</h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <p>You appear to be connecting to this service using IPv4.</p>
+                    <p>This suggests that your IPv6 connectivity is broken or non-existent.</p>
+                    <p>We recommend troubleshooting and resolving this issue <strong>as soon as possible!</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'ncrawl/js/index.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row spaced-row">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="img-rounded img-responsive center-block"
+                             src="{% static 'ncrawl/img/logo_sqr_md.jpg' %}"/>
+                    </div>
+                    <div class="col-md-9 col-md-offset-1">
+                        <h1>Workonline Communications</h1>
+                        <p class="lead">Tools and information for customers and peers of AS37271.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

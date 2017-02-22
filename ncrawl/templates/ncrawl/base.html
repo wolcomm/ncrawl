@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Workonline Communications{% endblock %}</title>
+    <meta name="description" content="Network Topology Mapper"/>
+    <link rel="icon" href="{% static 'ncrawl/img/favicon.ico' %}"/>
+    {% block start-links %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'ncrawl/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'ncrawl/css/base.css' %}"/>
+    {% block end-links %}{% endblock %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock %}
+</head>
+
+<body>
+    {% block navbar %}{% include "ncrawl/navbar.html" %}{% endblock %}
+    {% block modal %}{% endblock %}
+    <div class="container-fluid">
+        <div class="base" id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% include "ncrawl/footer.html" %}
+</body>
+</html>

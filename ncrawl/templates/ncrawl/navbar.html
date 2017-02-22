@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'ncrawl-index' %}">
+                <img class="navbar-brand-img" src="{% static 'ncrawl/img/logo_sqr_sml.jpg' %}"/>
+            </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+            {% if src_address %}
+                <p class="navbar-text navbar-right">
+                    Visiting from <i>{{ src_address }}</i>
+                    {% if src_address.version == 4 %}
+                        <span class="label label-danger" id="ip-version">IPv4</span>
+                    {% elif src_address.version == 6 %}
+                        <span class="label label-success" id="ip-version">IPv6</span>
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</nav>

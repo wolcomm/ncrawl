@@ -1,6 +1,10 @@
 {% extends "ncrawl/base.html" %}
 {% load staticfiles %}
 
+{% block start-links %}
+    <link rel="stylesheet" href="{% static 'next-ui/css/next.min.css' %}"/>
+{% endblock %}
+
 {% block modal %}
     <div class="modal fade" id="legacy-ip-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -23,20 +27,57 @@
 
 {% block scripts %}
     <script src="{% static 'ncrawl/js/index.js' %}"></script>
+    <script src="{% static 'next-ui/js/next.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="row spaced-row">
-        <div class="col-md-12">
-            <div class="jumbotron">
-                <div class="row">
-                    <div class="col-md-2">
-                        <img class="img-rounded img-responsive center-block"
-                             src="{% static 'ncrawl/img/logo_sqr_md.jpg' %}"/>
+    <div class="row">
+        <div class="col-md-12 full-height" id="output">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul id="output-tabs" class="nav nav-pills">
+                        <li class="active">
+                            <a id="topology-tab-link" data-toggle="tab" href="#topology-tab">Topology</a>
+                        </li>
+                        <li>
+                            <a id="data-tab-link" data-toggle="tab" href="#data-tab">Data</a>
+                        </li>
+                        <li class="pull-right">
+                            <a id="help-tab-link" data-toggle="tab" href="#help-tab">Help</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div id="progress" class="progress" hidden>
+                        <div id="progress-bar" class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0%">
+                        </div>
                     </div>
-                    <div class="col-md-9 col-md-offset-1">
-                        <h1>Workonline Communications</h1>
-                        <p class="lead">Tools and information for customers and peers of AS37271.</p>
+                    <div id="error-alert" role="alert" class="alert alert-danger lead" hidden>
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <span id="alert-text" class="text-capitalize"> An unhandled error occurred.</span>
+                    </div>
+                    <div class="tab-content">
+                        <div id="topology-tab" role="tabpanel" class="tab-pane fade in active">
+                            <div id="topology-container"></div>
+                        </div>
+                        <div id="data-tab" role="tabpanel" class="tab-pane fade">
+                            <div>
+                                <button id="copy-button" type="button" class="btn btn-default btn-copy" data-toggle="tooltip"
+                                title="Copy output to clipboard" data-placement="left" data-clipboard-target="#data-display">
+                                    <span class="glyphicon glyphicon-copy"></span>
+                                </button>
+                            </div>
+                            <pre id="data-display" class="output">Topology data loading...</pre>
+                        </div>
+                        <div id="help-tab" role="tabpanel" class="tab-pane fade">
+                            <div id="help-tab-content"></div>
+                            <div>
+                                Rendered from
+                                <a id="md-src" href="{% static 'net_info_portal/md/topoeditor-help.md' %}">
+                                    original markdown document
+                                </a>.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

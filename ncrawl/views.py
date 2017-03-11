@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.views import View
 from django.http import JsonResponse
 from ncrawl import settings, snmp
+from napalm_ios import IOSDriver
 
 
 
@@ -82,6 +83,65 @@ class LldpTopologyView(BaseTopologyApiView):
                         if not link_matched:
                             link = {'source': node_name, 'target': neighbor_name, 'bidi': False}
                             links.append(link)
+                except:
+                    continue
+        for link in links:
+            if not link['bidi']:
+                links.remove(link)
+        for site in sites:
+            node_set = {'name': site, 'nodes': [], 'icon': 'router'}
+            for node in nodes:
+                if node['site'] == site:
+                    node_set['nodes'].append(node['name'])
+            node_sets.append(node_set)
+        topology = {'nodes': nodes, 'links': links, 'nodeSet': node_sets}
+        return topology
+
+
+class NPLldpTopologyView(BaseTopologyApiView):
+    def compute_topology(self):
+        start_node = settings.DISC_START_NODE
+        poll_queue = [start_node]
+        polled = set()
+        sites = set()
+        nodes, links, node_sets = list(), list(), list()
+        while poll_queue:
+            node = poll_queue.pop()
+            if node in polled:
+                continue
+            else:
+                polled.add(node)
+                try:
+                    device = IOSDriver(
+                        hostname=node,
+                        username=settings.SSH['user'],
+                        password=settings.SSH['pass'],
+                        optional_args={
+                            'secret': settings.SSH['enable']
+                        }
+                    )
+                    device.open()
+                    neighbors = device.get_lldp_neighbors()
+                    device.close()
+                    node_name = self.trim_hostname(node)
+                    site = self.sitecode(node)
+                    nodes.append({'name': node_name, 'icon': 'router', 'site': site})
+                    sites.add(site)
+                    for interface in neighbors:
+                        for adjacency in neighbors[interface]:
+                            neighbor = adjacency['hostname']
+                            poll_queue.append(neighbor)
+                            neighbor_name = self.trim_hostname(neighbor)
+                            link_matched = False
+                            for link in links:
+                                if link['source'] == neighbor_name and link['target'] == node_name:
+                                    if not link['bidi']:
+                                        link['bidi'] = True
+                                        link_matched = True
+                                        break
+                            if not link_matched:
+                                link = {'source': node_name, 'target': neighbor_name, 'bidi': False}
+                                links.append(link)
                 except:
                     continue
         for link in links:

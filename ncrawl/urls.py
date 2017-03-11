@@ -1,8 +1,8 @@
 from django.conf.urls import url, include
-from ncrawl.views import IndexView, LldpTopologyView
+from ncrawl.views import IndexView, NPLldpTopologyView
 
 topology_urls = [
-    url(r'^lldp/$', LldpTopologyView.as_view(), name='lldp-topology')
+    url(r'^lldp/$', NPLldpTopologyView.as_view(), name='lldp-topology')
 ]
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='ncrawl-index'),

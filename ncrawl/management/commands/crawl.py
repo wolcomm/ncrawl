@@ -25,14 +25,20 @@ class Command(BaseCommand):
             self.stdout.write("Getting next node from polling queue.")
             node = queue.pop()
             if node in polled:
-                self.stdout.write("Node %s already polled. Skipping.")
+                self.stdout.write("Node %s already polled. Skipping." % node)
                 continue
             else:
                 self.stdout.write("Polling for neighbors of node %s" % node)
-                with poll.Poller(node=node) as poller:
-                    neighbors = poller.get_lldp_neighbors()
+                try:
+                    with poll.Poller(node=node) as poller:
+                        neighbors = poller.get_lldp_neighbors()
+                except Exception as e:
+                    self.stdout.write("Polling node %s failed. Moving on." % node)
+                    polled.add(node)
+                    continue
                 self.stdout.write("Found %d neighbors of node %s" % (len(neighbors), node))
-                queue.append(neighbors)
+                queue.extend(neighbors)
             self.stdout.write("Finished polling node %s. %d nodes still queued." % (node, len(queue)))
+            polled.add(node)
             continue
         self.stdout.write("Crawl completed.")

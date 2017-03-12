@@ -10,8 +10,11 @@ class Node(models.Model):
 
 
 class Interface(models.Model):
-    name = models.CharField(max_length=50, unique=True)
     node = models.ForeignKey(Node, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        unique_together = ('node', 'name')
 
     def __str__(self):
         return "%s(%s-%s)" % (self.__class__.__name__, self.node.name, self.name)

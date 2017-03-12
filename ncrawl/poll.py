@@ -25,14 +25,10 @@ class Poller(object):
         neighbors = self.device.get_lldp_neighbors_detail()
         remote_nodes = set()
         for i in neighbors:
-            src_interface = models.Interface.objects.get_or_create(name=i, node=self.node.id)
+            src_interface = models.Interface.objects.get_or_create(name=i, node=self.node)[0]
             for a in neighbors[i]:
-                remote_node = models.Node.objects.get_or_create(name=a['remote_system_name'])
-                dst_interface = models.Interface.objects.get_or_create(name=a['remote_port'], node=remote_node.id)
-                try:
-                    models.Adjacency.objects.get(source=src_interface.id, target=dst_interface.id)
-                except models.Adjacency.DoesNotExist:
-                    adj = models.Adjacency.objects.create(source=src_interface, target=dst_interface)
-                    adj.save()
+                remote_node = models.Node.objects.get_or_create(name=a['remote_system_name'])[0]
+                dst_interface = models.Interface.objects.get_or_create(name=a['remote_port'], node=remote_node)[0]
+                adj = models.Adjacency.objects.get_or_create(source=src_interface, target=dst_interface)[0]
                 remote_nodes.add(remote_node)
-        return remote_nodes
+        return list(remote_nodes)

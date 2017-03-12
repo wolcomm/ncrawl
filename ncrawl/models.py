@@ -1,9 +1,16 @@
 from __future__ import unicode_literals
+import re
 from django.db import models
+from ncrawl import settings
 
 
 class Node(models.Model):
     name = models.CharField(max_length=50, unique=True)
+
+    @property
+    def hostname(self):
+        regexp = re.compile(r"\.%s" % settings.DOMAIN)
+        return regexp.sub('', self.name)
 
     def __str__(self):
         return "%s(%s)" % (self.__class__.__name__, self.name)

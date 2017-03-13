@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.core.management.base import BaseCommand
-from ncrawl import models, poll
+from ncrawl import models, poll, settings
 
 
 class Command(BaseCommand):
@@ -16,7 +16,7 @@ class Command(BaseCommand):
             self.stdout.write("Found starting node %s." % start_node)
         except models.Node.DoesNotExist:
             self.stdout.write("Starting node not found, creating it instead.")
-            start_node = models.Node.objects.create(name=options['start_node'])
+            start_node = models.Node.objects.create(name=options['start_node'], driver=settings.DEFAULT_DRIVER)
             start_node.save()
             self.stdout.write("Created starting node %s" % start_node)
         queue = [start_node]

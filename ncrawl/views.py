@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import re
 import ipaddress
 from django.views.generic import TemplateView
@@ -102,9 +103,11 @@ class NPLldpTopologyView(BaseTopologyApiView):
         node_list, link_list, node_set_list = list(), list(), list()
         for adj in models.Adjacency.objects.all():
             [nodes.add(n) for n in (adj.source.node, adj.target.node)]
-            link_list.append(
-                {'source': adj.source.node.hostname, 'target': adj.target.node.hostname}
-            )
+            reverse = {'source': adj.target.node.hostname, 'target': adj.source.node.hostname}
+            if reverse not in link_list:
+                link_list.append(
+                    {'source': adj.source.node.hostname, 'target': adj.target.node.hostname}
+                )
         for node in nodes:
             node_list.append(
                 {'name': node.hostname, 'icon': 'router'}

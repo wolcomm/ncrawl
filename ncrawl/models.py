@@ -6,6 +6,7 @@ from ncrawl import settings
 
 class Node(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    driver = models.CharField(max_length=20, default=settings.DEFAULT_DRIVER)
 
     @property
     def hostname(self):

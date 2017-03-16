@@ -1,0 +1,69 @@
+{% extends "ncrawl/base.html" %}
+{% load staticfiles %}
+
+{% block start-links %}
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="legacy-ip-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content panel-danger">
+                <div class="modal-header panel-heading">
+                    <h4 class="modal-title"><strong>Warning!</strong> Legacy IP version detected.</h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <p>You appear to be connecting to this service using IPv4.</p>
+                    <p>This suggests that your IPv6 connectivity is broken or non-existent.</p>
+                    <p>We recommend troubleshooting and resolving this issue <strong>as soon as possible!</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'ncrawl/js/dindex.js' %}"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 full-height" id="output">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul id="output-tabs" class="nav nav-pills">
+                        <li class="active">
+                            <a id="topology-tab-link" data-toggle="tab" href="#topology-tab">Topology</a>
+                        </li>
+                        <li class="pull-right">
+                            <a id="help-tab-link" data-toggle="tab" href="#help-tab">Help</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div id="topology-tab" role="tabpanel" class="tab-pane fade in active">
+                            <svg id="topology-svg" width="960" height="600"></svg>
+                        </div>
+                        <div id="help-tab" role="tabpanel" class="tab-pane fade">
+                            <div id="help-tab-content">
+                                <svg viewBox="0 0 300 300" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <text font-family="next-font" x="100" y="100">&#xe61c;</text>
+                                </svg>
+                            </div>
+                            <div>
+                                Rendered from
+                                <a id="md-src" href="#">
+                                    original markdown document
+                                </a>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

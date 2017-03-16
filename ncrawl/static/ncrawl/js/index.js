@@ -6,7 +6,6 @@ $(document).ready(function () {
     // configure topology
     var topoConfig = {
         adaptive: true,
-        dataProcessor: 'force',
         identityKey: 'name',
         nodeConfig: {
             label: 'model.name',

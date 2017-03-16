@@ -39,3 +39,4 @@ class Adjacency(models.Model):
         related_name='left_adjacencies',
         on_delete=models.CASCADE
     )
+    protocol = models.CharField(max_length=20, default='lldp')

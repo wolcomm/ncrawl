@@ -4,7 +4,7 @@ import ipaddress
 from django.views.generic import TemplateView
 from django.views import View
 from django.http import JsonResponse
-from ncrawl import settings, snmp, models
+from ncrawl import settings, snmp, models, graphs
 
 
 class BaseTopologyView(TemplateView):
@@ -25,7 +25,7 @@ class BaseTopologyView(TemplateView):
 
 
 class IndexView(BaseTopologyView):
-    template_name = 'ncrawl/index.html'
+    template_name = 'ncrawl/dindex.html'
 
 
 class BaseTopologyApiView(View):
@@ -114,3 +114,9 @@ class NPLldpTopologyView(BaseTopologyApiView):
             )
         topology = {'nodes': node_list, 'links': link_list, 'nodeSet': node_set_list}
         return topology
+
+
+class LldpGraphTopology(BaseTopologyApiView):
+    def compute_topology(self):
+        topology = graphs.TopologyGraph(protocol='lldp')
+        return topology.layout()

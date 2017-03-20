@@ -6,9 +6,11 @@ $(document).ready(function () {
         $("#legacy-ip-modal").modal();
     }
 
-    var svg = d3.select("#topology-svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+    var svg = d3.select("#topology-container")
+        .append("svg")
+        .style("min-height", "600");
+    var width = $("svg").width(),
+        height = $("svg").height();
     var radius = {
         inner: 14,
         outer: 16
@@ -86,11 +88,9 @@ $(document).ready(function () {
         function ticked() {
             node.selectAll("circle")
                 .attr("cx", function (d) {
-                    // return d.x;
                     return d.x = Math.max(radius.outer, Math.min(d.x, width - radius.outer));
                 })
                 .attr("cy", function (d) {
-                    // return d.y;
                     return d.y = Math.max(radius.outer, Math.min(d.y, height - radius.outer));
                 });
             node.selectAll("text")

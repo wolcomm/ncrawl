@@ -53,8 +53,6 @@ $(document).ready(function () {
             .selectAll("g")
             .data(graph.nodes)
             .enter()
-            // .append("circle")
-            // .attr("r", radius)
             .append("g")
             .attr("class", "node")
             .call(d3.drag()
